@@ -1,0 +1,840 @@
+snippet apit
+	telan air liur
+
+snippet a-o
+	'${1:value}' => '$1',
+	${2:a-o}${0}
+
+
++---------------------------------- BUTTON ------------------------------------+
+
+snippet new-button
+
+---------------- FORM --------------------------------------+
+
+snippet form-open
+	@if( $errors->has() )
+	<div class="callout callout-danger">
+		<h4>Please fix the error and resubmit</h4>
+		<ul>
+			@foreach( $errors->all( '<li>:message</li>' ) as $error )
+				{!! $error !!}
+			@endforeach
+		</ul>
+	</div>
+
+	<script>
+	var errors = 
+	<?php
+		$x = 1;
+		$count = count( $errors->all() );
+	?>
+
+	@foreach( $errors->all() as $error )
+		@if( $x != $count )
+			"{!! $error !!}\n" +
+		@else
+			"{!! $error !! }\n";
+		@endif
+		<?php
+		$x++;
+		?>
+	@endforeach
+	alert(errors);
+	</script>
+	@endif
+
+
+	{!! Form::open( [ 'action' => '${1:Controller@postMethod}', 'method' => 'post', 'class' => 'form-horizontal', 'autocomplete' => 'off', 'files' => 'true' ] ) !!}
+	
+	${0}
+	
+	{!! Form::close() !!}
+
+
+snippet form-model
+	@if( $errors->has() )
+	<div class="callout callout-danger">
+		<h4>Please fix the error and resubmit</h4>
+		<ul>
+			@foreach( $errors->all( '<li>:message</li>' ) as $error )
+				{!! $error !!}
+			@endforeach
+		</ul>
+	</div>
+
+	<script>
+	var errors = 
+	<?php
+		$x = 1;
+		$count = count( $errors->all() );
+	?>
+
+	@foreach( $errors->all() as $error )
+		@if( $x != $count )
+			"{!! $error !!}\n" +
+		@else
+			"{!! $error !! }\n";
+		@endif
+		<?php
+		$x++;
+		?>
+	@endforeach
+	alert(errors);
+	</script>
+	@endif
+
+
+	{!! Form::model( ${1:object}, [ 'action' => [ '${2:Controller@postMethod}', $1->id ], 'method' => 'post', 'class' => 'form-horizontal', 'autocomplete' => 'off', 'files' => 'true' ] ) !!}
+	
+	${0}
+	
+	{!! Form::close() !!}
+
+snippet form-submit
+	<div class="form-group">
+		<label class="col-md-2 control-label"></label>
+		<div class="col-md-10">
+			<button type="submit" class="btn btn-success" value="${1:Submit}">$1</button>
+		</div>
+	</div>
+
+snippet form-box-footer-submit
+	<div class="box-footer">
+		<button class="btn btn-success pull-right" type="submit" value="${1:Submit}">$1</button>
+	</div>
+
+snippet form-datepicker
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:label}</label>
+		<div class="col-md-10">
+			{!! Form::text('${2:field}', ${3:null}, [ 'class' => 'form-control datepicker' ] ) !!}
+			{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+		</div>
+	</div>
+
+
+	<!-- datepicker -->
+	<script src="{{ asset('plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+
+	<script>
+	$('.datepicker').datepicker({
+		format: 'yyyy-mm-dd',
+		calendarWeeks: true,
+		todayHighlight: true,
+	});
+	</script>
+
+snippet form-email 
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:Email}</label>
+		<div class="col-md-10">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+				{!! Form::email('${2:field}', ${3:null}, [ 'class' => 'form-control', 'placeholder' => '${4:Please Enter Valid Email}' ] ) !!}
+				{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+				<span class="help-block">Please insert the right email address</span>
+			</div>
+		</div>
+	</div>
+
+
+snippet form-phone
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:Phone}</label>
+		<div class="col-md-10">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-phone"></i></span>
+				{!! Form::text('${2:field}', ${3:null}, [ 'class' => 'form-control inputmask' ] ) !!}
+				{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+			</div>
+		</div>
+	</div>
+
+	<!-- Put This In bottomScript -->
+	<!-- InputMask -->
+	<script src="{!! asset('plugins/input-mask/jquery.inputmask.js') !!}"></script>
+	<script src="{!! asset('plugins/input-mask/jquery.extensions.js') !!}"></script>
+	<script>
+		$(".inputmask").inputmask({
+			mask: '+(999) 999 - 9999'
+		});
+	</script>
+
+snippet form-mobile
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:Mobile Phone}</label>
+		<div class="col-md-10">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-phone"></i></span>
+				{!! Form::text('${2:field}', ${3:null}, [ 'class' => 'form-control inputmask' ] ) !!}
+				{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+			</div>
+		</div>
+	</div>
+
+	<!-- Put This In bottomScript -->
+	<!-- InputMask -->
+	<script src="{!! asset('plugins/input-mask/jquery.inputmask.js') !!}"></script>
+	<script src="{!! asset('plugins/input-mask/jquery.extensions.js') !!}"></script>
+	<script>
+		$(".inputmask").inputmask({
+			mask: '+(999) 999 - 9999'
+		});
+	</script>
+
+snippet form-money-rm 
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:label}</label>
+		<div class="col-md-10">
+			<div class="input-group">
+				<span class="input-group-addon">RM</span>
+				{!! Form::text('${2:field}', ${3:null}, [ 'class' => 'form-control', 'placeholder' => '${4:placeholder}' ] ) !!}
+				{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+			</div>
+		</div>
+	</div>
+
+snippet form-checkbox
+	<!--iCheck-->
+	<link rel="stylesheet" href={!! asset('plugins/iCheck/square/blue.css') !!}">
+	
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:label}</label>
+		<div class="col-md-10">
+			<div class="checkbox icheck">
+			{!! Form::checkbox('${2:field}', '${3:Enter Check Value}', false, [ 'class' => 'form-control checkbox' ] ) !!}
+			{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+			</div>
+		</div>
+	</div>
+
+	//insert into bottom script
+	<!--iCheck-->
+	<script src={!! asset('plugins/iCheck/icheck.min.js') !!}"></script>
+	<script>
+		$(function(){
+			$('.checkbox').iCheck({
+				checkboxClass: 'icheckbox_square-blue',
+				radioClass: 'iradio_square-blue',
+				increaseArea: '20%' //optional
+			});
+		});
+	</script>
+
+snippet form-text
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:label}</label>
+		<div class="col-md-10">
+			{!! Form::text('${2:field}', ${3:null}, [ 'class' => 'form-control' ] ) !!}
+			{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+		</div>
+	</div>
+
+snippet form-hidden
+			{!! Form::hidden('${2:field}', ${3:null} ) !!}
+
+snippet form-textarea
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:label}</label>
+		<div class="col-md-10">
+			{!! Form::textarea('${2:field}', ${3:null}, [ 'class' => 'form-control' ] ) !!}
+			{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+		</div>
+	</div>
+
+
+snippet form-password
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:Password}</label>
+		<div class="col-md-10">
+			{!! Form::password('password', [ 'class' => 'form-control' ] ) !!}
+			{!! $errors->first('password', '<p class="text text-danger">:message</p>') !!}	
+		</div>
+	</div>
+
+snippet form-password-confirmation
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:Password Confirmation}</label>
+		<div class="col-md-10">
+			{!! Form::password('password_confirmation', [ 'class' => 'form-control' ] ) !!}
+			{!! $errors->first('password_confirmation', '<p class="text text-danger">:message</p>') !!}	
+		</div>
+	</div>
+
+snippet form-drop-down
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:label}</label>
+		<div class="col-md-10">
+			{!! Form::select('${2:field}', $dropDownOption$2, ${3:null}, [ 'class' => 'form-control', 'placeholder' => '${4:Please select...}'] ) !!}
+			{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+		</div>
+	</div>
+
+	$dropDownOption$2 = ${5:Model}::lists('${6:SelectColumn}', 'id');
+
+snippet form-image
+	<!-- Add this to section css -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:label}</label>
+		<div class="col-md-10">
+			<div class="fileinput fileinput-new" data-provides="fileinput">
+				<a class="popup-image" href="{!! assetImage( ${2:source filename like $user->picture} ) !!}">
+					<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+						<img src="{!! assetImage( $2 ) !!}" style="max-width: 200px; max-height: 150px;" alt="...">
+					</div>
+				</a>
+			<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+			<div>
+				<span class="btn btn-default btn-file">
+					<span class="fileinput-new">${3:Image}</span>
+					<span class="fileinput-exists">${4:Change}</span>
+					{!! Form::file('${5:file field name}', [ 'class' => 'form-control' ] ) !!}
+				</span>
+				<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">${6:Cancel Image}</a>
+			</div>
+		</div>
+		{!! $errors->first( '$5', '<p class="text text-danger">:message</p>' ) !!}
+	</div>
+	</div>
+
+	<!-- Add this to bottomScript -->
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+	<script>
+		$('.fileinput').fileinput();
+	</script>
+
+snippet form-number
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:label}</label>
+		<div class="col-md-10">
+			{!! Form::number('${2:field}', ${3:null}, [ 'class' => 'form-control' ] ) !!}
+			{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+		</div>
+	</div>
+
+
+snippet form-datalist
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:label}</label>
+		<div class="col-md-10">
+			{!! Form::text('${2:field}', ${3:null}, [ 'class' => 'form-control' , 'list' => '$4' ] ) !!}
+			{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+		</div>
+	</div>
+	<datalist id="{!! ${4:data_list_name}">
+		@foreach( $options as $option )
+			<option value="{!! $option !!}">	
+		@endforeach
+	</datalist>
+
+snippet ajax-chain-drop-down
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:label}</label>
+		<div class="col-md-10">
+			{!! Form::select('${2:field}', $dropDownOption$2, ${3:null}, [ 'id' => '$2' 'class' => 'form-control', 'placeholder' => '${4:Please select...}'] ) !!}
+			{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+		</div>
+	</div>
+
+	//Add this to the method controller generating the main drop-down
+	$dropDownOption$2 = ${5:Model}::lists('${6:SelectColumn}', 'id');
+	
+	<div style="display:none;" class="text-center" id="loaderDiv"><img src="{!! asset('gif/ajax-loader.gif') !!}" width="auto" height="70px" /></div>
+	<div id="optionTableFieldDiv"></div>
+
+	//Add to bottomScript
+	<script>
+	$(document).ready(function(){
+		$("#$2").change(function(){
+			var selectedVal = this.value;
+			$.ajax({
+				url: "{!! action('${7:action_controller_to_generate_second_drop_down}@${8:method_name}') !!}/" + selectedVal, 
+				beforeSend: function(){
+					$("#loaderDiv").show();	
+				},
+				success: function(result){
+					$("#optionTableFieldDiv").html(result);
+					$("#loaderDiv").hide();
+				}
+			});
+		});
+	});
+	</script>
+
+	//add this to the controller as another method
+	/*--------------------------------------------------------------------------------------------------------------------/	
+	 *
+	 *	@description	This will generate the drop down selector for table field which will be used via ajax
+	 *	@author		Idham Hafidz JOMos	idham@jomos.com.my
+	 */
+	public function $8(  ${9:id_ref} )
+	{
+
+		$dropDownOption_ajax = ${10:Model}::where( 'table_id', $9 )->lists('${11:field_name}', 'id');
+
+		return view('${12:view_folder}.partial._$8', compact( 'dropDownOption_ajax' ) );
+
+	}
+
+	//Add this to top of controller
+	use App/$5;
+	use App/$10;
+
+	//add this to ${12:view_folder}.partial._$8 
+	<div class="form-group">
+		<label class="col-md-2 control-label">${13:label}</label>
+		<div class="col-md-10">
+			{!! Form::select('${14:field}', $dropDownOption_ajax, ${15:null}, [ 'class' => 'form-control', 'placeholder' => '${16:Please select...}'] ) !!}
+			{!! $errors->first('$14', '<p class="text text-danger">:message</p>') !!}	
+		</div>
+	</div>
+
+
++---------------------- LAYOUT --------------------------------+
+
+snippet box
+	<div class="box">
+		<div class="box-header with-border">
+		 	<i class="fa fa-{!! $icon !!}"></i>
+		  	<h3 class="box-title">${1:box_title}</h3>
+		</div><!-- /.box-header -->
+		<div class="box-body">
+
+		${0}
+
+		</div>
+	</div>
+
+
+snippet boxprimary
+	<div class="box box-primary">
+		<div class="box-header with-border">
+		 	<i class="fa fa-${1:icon}"></i>
+		  	<h3 class="box-title">${2:box_title}</h3>
+		</div><!-- /.box-header -->
+		<div class="box-body">
+
+		${0}
+
+		</div>
+	</div>
+
+
+snippet boxsuccess
+	<div class="box box-success">
+		<div class="box-header with-border">
+		 	<i class="fa fa-${1:icon}"></i>
+		  	<h3 class="box-title">${2:box_title}</h3>
+		</div><!-- /.box-header -->
+		<div class="box-body">
+
+		${0}
+
+		</div>
+	</div>
+
+
+snippet boxdanger
+	<div class="box box-danger">
+		<div class="box-header with-border">
+		 	<i class="fa fa-${1:icon}"></i>
+		  	<h3 class="box-title">${2:box_title}</h3>
+		</div><!-- /.box-header -->
+		<div class="box-body">
+
+		${0}
+
+		</div>
+	</div>
+
+
+snippet boxinfo
+	<div class="box box-info">
+		<div class="box-header with-border">
+		 	<i class="fa fa-${1:icon}"></i>
+		  	<h3 class="box-title">${2:box_title}</h3>
+		</div><!-- /.box-header -->
+		<div class="box-body">
+
+		${0}
+
+		</div>
+	</div>
+
+
+snippet boxwarning
+	<div class="box box-warning">
+		<div class="box-header with-border">
+		 	<i class="fa fa-${1:icon}"></i>
+		  	<h3 class="box-title">${2:box_title}</h3>
+		</div><!-- /.box-header -->
+		<div class="box-body">
+
+		${0}
+
+		</div>
+	</div>
+
+snippet boxnoborder
+	<div class="box">
+		<div class="box-header with-border">
+		 	<i class="fa fa-${1:icon}"></i>
+		  	<h3 class="box-title">${2:box_title}</h3>
+		</div><!-- /.box-header -->
+		<div class="box-body">
+
+		${0}
+
+		</div>
+	</div>
+
+snippet tab-left
+	<!-- Custom Tabs -->
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#tab_1" data-toggle="tab">${1:tab_1}</a></li>
+			<li><a href="#tab_2" data-toggle="tab">${2:tab_2}</a></li>
+			<li><a href="#tab_3" data-toggle="tab">${3:tab_3}</a></li>
+			<li class="dropdown">
+			  	<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			      	Dropdown <span class="caret"></span>
+			  	</a>
+				<ul class="dropdown-menu">
+					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+				        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+					<li role="presentation" class="divider"></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+				</ul>
+			</li>
+			<li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+		</ul>
+		 <div class="tab-content">
+		    	<div class="tab-pane active" id="tab_1">
+			${0}	
+			
+			</div><!-- /.tab-pane -->
+			<div class="tab-pane" id="tab_2">
+			
+			
+			</div><!-- /.tab-pane -->
+			<div class="tab-pane" id="tab_3">
+
+
+			</div><!-- /.tab-pane -->
+		</div><!-- /.tab-content -->
+	</div><!-- nav-tabs-custom -->
+
+snippet tab-right
+	<!-- Custom Tabs -->
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs pull-right">
+			<li class="active"><a href="#tab_1" data-toggle="tab">${1:tab_1}</a></li>
+			<li><a href="#tab_2" data-toggle="tab">${2:tab_2}</a></li>
+			<li><a href="#tab_3" data-toggle="tab">${3:tab_3}</a></li>
+			<li class="dropdown">
+			  	<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			      	Dropdown <span class="caret"></span>
+			  	</a>
+				<ul class="dropdown-menu">
+					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+				        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+					<li role="presentation" class="divider"></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+				</ul>
+			</li>
+			<li class="pull-left header"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+		</ul>
+		 <div class="tab-content">
+		    	<div class="tab-pane active" id="tab_1">
+			${0}	
+			
+			</div><!-- /.tab-pane -->
+			<div class="tab-pane" id="tab_2">
+			
+			
+			</div><!-- /.tab-pane -->
+			<div class="tab-pane" id="tab_3">
+
+
+			</div><!-- /.tab-pane -->
+		</div><!-- /.tab-content -->
+	</div><!-- nav-tabs-custom -->
+
+snippet description-horizontal
+	 <dl class="dl-horizontal">
+	    	<dt>${1:first_title}</dt>
+	       		<dd>${2:first_description}</dd>
+		<dt>${3:second_title}</dt>
+			<dd>${4:second_description}</dd>
+		${5:dtdd}${0}
+	</dl>
+
+snippet dtdd
+	<dt>${1}</dt>
+		<dd>{!! ${2} !!}</dd>
+	${3:dtdd}${0}
+
+snippet new-page
+	@extends('layout.master')
+	
+	@section('css')
+	@stop	
+	
+	@section('topScript')
+	@stop	
+	
+	@section('content-header')
+	<!-- Content Header (Page header) -->
+	<h1>
+		<i class="fa fa-{!! $icon !!}"></i> ${1:page_name} 
+		<small>${2:page_description}</small>
+	</h1>
+	
+	<ol class="breadcrumb">
+		<li><a href=""><i class="fa fa-dashboard"></i>Dashboard</a></li>
+		<li class="active">Laravel</li>
+	</ol>
+	@stop
+	
+	@section('content')
+	${0}
+	@stop
+	
+	@section('bottomScript')
+	@stop
+
+snippet row
+	<div class="row">
+
+		${0}	
+
+	</div>
+
+snippet 12-col
+	<div class="col-md-12">
+
+		${0}
+
+	</div>
+
+snippet 6-col
+	<div class="col-md-6">
+
+		${0}
+
+	</div>
+
++---------------------------------- TABLE ------------------------------------------------+
+
+snippet datatable
+	<!-- This goes to css section -->
+	<!--DataTables-->
+	<link rel="stylesheet" href="{!! asset('plugins/datatables/dataTables.bootstrap.css') !!}">
+
+	//This goes to content section	
+	<table id="$1" class="table table-bordered table-striped table-hover">
+	<thead>
+		<tr>
+			<th>${2:header_1}</th>
+			<th>${3:header_2}</th>
+			<th>${4:header_3}</th>
+			<th>${5:header_4}</th>
+			<th>${6:header_5}</th>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach( ${7:rows} as ${8:row} )
+		<tr>
+			<td>{!! $8->${9:detail_1} !!}</td>
+			<td>{!! $8->${10:detail_2} !!}</td>
+			<td>{!! $8->${11:detail_3} !!}</td>
+			<td>{!! $8->${12:detail_4} !!}</td>
+			<td>{!! $8->${13:detail_5} !!}</td>
+			<td><a href="{!! action('${14:action_link_to_delete}', $8->id) !!}" class="btn btn-small btn-danger"><i class="fa fa-trash"></i></a></td>
+			<td><a href="{!! action('${15:action_link_to_edit}', $8->id) !!}" class="btn btn-small btn-warning"><i class="fa fa-edit"></i></a></td>
+		</tr>
+		@endforeach
+	</tbody>
+	</table>
+
+	<!-- This goes to bottomScript section -->
+	<!-- DataTables -->
+	<script src="{!! asset('plugins/datatables/jquery.dataTables.min.js') !!}"></script>
+	<script src="{!! asset('plugins/datatables/dataTables.bootstrap.min.js') !!}"></script>
+
+	<script>
+		$(function() {
+			$('#${1:table_id}').DataTable({
+				"paging": true,
+				"lengthChange": true,
+				"searching": true,
+				"ordering": true,
+				"info": true,
+				"autoWidth": false
+			});
+		});
+	</script>
+
+snippet <th
+	<th>${1:header}</th>
+	${2:<th}${0}
+
+snippet <td
+	<td>{!! ${1} !!}</td>
+	${2:<td}${0}
+
+
++-------------------------------------- PHP ---------------------------------------+
+
+snippet db
+	\DB::transaction( function() use( $request ){
+
+		${0}
+
+
+	});
+
+snippet tos
+	\Toastr::${1}('${2:messeges}');
+
+snippet rr
+	return redirect()->action('${1}');
+
+snippet pf
+
+	/*--------------------------------------------------------------------------------------------------------------------/	
+	 *
+	 *	@description	${4:function description}
+	 *	@author		Idham Hafidz JOMos	idham@jomos.com.my
+	 */
+	public function ${1:function_name}( ${2:Request $request} ${3:, $someId} )
+	{
+
+		${0}
+
+
+
+
+	}
+
++----------------------------------------------- MODEL ---------------------------------------------------------------+
+
+snippet softdelete
+	use Illuminate\Database\Eloquent\SoftDeletes;
+	// put this inside class closure
+	use SoftDeletes;
+	/**
+	* The attributes that should be mutated to dates.
+	*
+	* @var array
+	*/
+	protected $dates = ['deleted_at'];
+
+snippet protectedtable
+	protected $table = " ${1:table_name}";
+
+snippet guarded
+	/**
+	* The attributes that aren't mass assignable. Means cannot use create([]) like image. Because image need to do separately.
+	*
+	* @var array
+	*/
+	protected $guarded = ['${1:company_logo_image}'];
+
+snippet hasmany
+	public function ${1:function_name}()
+	{
+
+		return $this->hasMany( 'App\${2:model_name}', '${3:foreign_key}' )
+
+	}
+
+snippet belongsto
+	public function ${1:function_name}()
+	{
+
+		return $this->belongsTo( 'App\${2:model_name}', '${3:foreign_key}' )
+
+	}
+
++--------------------------- CONTROLLER -----------------------------------------+
+
+
++--------------------------- VALIDATION -----------------------------------------+
+
+snippet validate
+	$this->validate( $request, [
+
+		'${1}' => '${2}',
+		${3:av}${0}
+	
+	]);
+
+snippet av
+	'${1}' => '${2}',
+	${3:av}${0}
+
+
++---------------------------- INSERT / UPDATE------------------------------------------------+
+
+snippet insert
+	$i = new ${1};
+	${2:ist}${0}
+	$i->save();
+
+snippet update
+	$i = ${1:model_name}::find( ${2:model_id} );
+	${3:ist}${0}
+	$i->save();
+
+snippet ist
+	$i->${1:field_name} = $request->$1;
+	${2:ist}${0}
+
+snippet create
+	$c = ${1:model_name}::create( $request );	
+
+snippet editlink
+	&nbsp; | &nbsp;
+	<a href="{!! action( '${1}', ${2} ) !!}"><i class="fa fa-edit"></i> Edit ${3}</a>
+
+snippet createlink
+	&nbsp; | &nbsp;
+	<a href="{!! action( '${1}', ${2} ) !!}"><i class="fa fa-plus"></i> Create New ${3}</a>
+
+snippet backlink
+	&nbsp; | &nbsp;
+	<a href="{!! action( '${1}', ${2} ) !!}"><i class="fa fa-level-up"></i> Back To ${3}</a>
+
+snippet c-viewshare
+	public function __construct()
+	{
+
+		view()->share('icon', '${1}');
+
+	}
+
+snippet insert-image
+	//at the top
+	use App\Services\ImageUploader;
+	use App\Services\ImageUploaderService;
+
+	if( $request->hasFile('${1:image_fieldname}') )
+	{ 
+		$filename = ImageUploaderService::upload( $request->file( $1 ) );
+		$i->$1 = $filename;
+	}
+
+	$i->save();
+
+
+

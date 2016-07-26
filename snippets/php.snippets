@@ -12,6 +12,13 @@ snippet new-button
 
 ---------------- FORM --------------------------------------+
 
+snippet form-s
+	<div class="form-group">
+			{{ form::text('${1:field_name}', null, [ 'class' => 'form-control', 'placeholder' => '${2:placeholder}'] ) }}
+			{{ $errors->first('$1', '<p class="text text-danger">:message</p>') }}	
+	</div>
+	
+
 snippet form-open
 	@if( $errors->has() )
 	<div class="callout callout-danger">
@@ -34,7 +41,7 @@ snippet form-open
 		@if( $x != $count )
 			"{!! $error !!}\n" +
 		@else
-			"{!! $error !! }\n";
+			"{!! $error !!}\n";
 		@endif
 		<?php
 		$x++;
@@ -74,7 +81,7 @@ snippet form-model
 		@if( $x != $count )
 			"{!! $error !!}\n" +
 		@else
-			"{!! $error !! }\n";
+			"{!! $error !!}\n";
 		@endif
 		<?php
 		$x++;
@@ -115,13 +122,14 @@ snippet form-datepicker
 
 
 	<!-- datepicker -->
-	<script src="{{ asset('plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+	<script src="{!! asset('plugins/datepicker/bootstrap-datepicker.js') !!}"></script>
 
 	<script>
 	$('.datepicker').datepicker({
 		format: 'yyyy-mm-dd',
 		calendarWeeks: true,
 		todayHighlight: true,
+		autoclose: true,
 	});
 	</script>
 
@@ -133,8 +141,8 @@ snippet form-email
 				<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
 				{!! Form::email('${2:field}', ${3:null}, [ 'class' => 'form-control', 'placeholder' => '${4:Please Enter Valid Email}' ] ) !!}
 				{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
-				<span class="help-block">Please insert the right email address</span>
 			</div>
+				<span class="help-block">Please insert the right email address</span>
 		</div>
 	</div>
 
@@ -197,13 +205,13 @@ snippet form-money-rm
 
 snippet form-checkbox
 	<!--iCheck-->
-	<link rel="stylesheet" href={!! asset('plugins/iCheck/square/blue.css') !!}">
+	<link rel="stylesheet" href="{!! asset('plugins/iCheck/square/blue.css') !!}">
 	
 	<div class="form-group">
 		<label class="col-md-2 control-label">${1:label}</label>
 		<div class="col-md-10">
 			<div class="checkbox icheck">
-			{!! Form::checkbox('${2:field}', '${3:Enter Check Value}', false, [ 'class' => 'form-control checkbox' ] ) !!}
+			{!! Form::checkbox('${2:field}', '${3:Enter Check Value}', null, [ 'class' => 'form-control checkbox' ] ) !!}
 			{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
 			</div>
 		</div>
@@ -211,7 +219,34 @@ snippet form-checkbox
 
 	//insert into bottom script
 	<!--iCheck-->
-	<script src={!! asset('plugins/iCheck/icheck.min.js') !!}"></script>
+	<script src="{!! asset('plugins/iCheck/icheck.min.js') !!}"></script>
+	<script>
+		$(function(){
+			$('.checkbox').iCheck({
+				checkboxClass: 'icheckbox_square-blue',
+				radioClass: 'iradio_square-blue',
+				increaseArea: '20%' //optional
+			});
+		});
+	</script>
+
+snippet form-radio
+	<!--iCheck-->
+	<link rel="stylesheet" href="{!! asset('plugins/iCheck/square/blue.css') !!}">
+	
+	<div class="form-group">
+		<label class="col-md-2 control-label">${1:label}</label>
+		<div class="col-md-10">
+			<div class="checkbox icheck">
+			{!! Form::radio('${2:field}', '${3:Enter Check Value}', false, [ 'class' => 'form-control radio' ] ) !!}
+			{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
+			</div>
+		</div>
+	</div>
+
+	//insert into bottom script
+	<!--iCheck-->
+	<script src="{!! asset('plugins/iCheck/icheck.min.js') !!}"></script>
 	<script>
 		$(function(){
 			$('.checkbox').iCheck({
@@ -232,7 +267,7 @@ snippet form-text
 	</div>
 
 snippet form-hidden
-			{!! Form::hidden('${2:field}', ${3:null} ) !!}
+			{!! Form::hidden('${1:field}', ${2:null} ) !!}
 
 snippet form-textarea
 	<div class="form-group">
@@ -266,12 +301,16 @@ snippet form-drop-down
 	<div class="form-group">
 		<label class="col-md-2 control-label">${1:label}</label>
 		<div class="col-md-10">
-			{!! Form::select('${2:field}', $dropDownOption$2, ${3:null}, [ 'class' => 'form-control', 'placeholder' => '${4:Please select...}'] ) !!}
+			{!! Form::select('${2:field}', $dropDownOption$2, ${3:null}, [ 'class' => 'form-control' ] ) !!}
 			{!! $errors->first('$2', '<p class="text text-danger">:message</p>') !!}	
 		</div>
 	</div>
 
-	$dropDownOption$2 = ${5:Model}::lists('${6:SelectColumn}', 'id');
+	$dropDownOption$2 = [ 0 => 'Non Active', 1 => 'Active' ];
+	$defaultOption = [ '' => 'Please select one...' ];
+	$dropDownOption$2 = $defaultOption + ${4:Model}::lists('${5:SelectColumn}', 'id')->toArray();
+	//Example if need to select combination of 2 columns. Simply delete if not required
+	//User::select(\DB::raw("CONCAT(first_name,'',last_name) As full_name, id"))->lists('full_name', 'id')->toArray();
 
 snippet form-image
 	<!-- Add this to section css -->
@@ -604,23 +643,232 @@ snippet new-page
 	@stop
 	
 	@section('content')
-	${0}
+	<div class="row">
+		<div class="col-md-12">
+			
+		</div>
+	</div>
 	@stop
 	
 	@section('bottomScript')
 	@stop
 
+
+snippet new-page-datatable
+	@extends('layout.master')
+	
+	@section('css')
+	@stop	
+	
+	@section('topScript')
+	@stop	
+	
+	@section('content-header')
+	<!-- Content Header (Page header) -->
+	<h1>
+		<i class="fa fa-{!! $icon !!}"></i> ${1:page_name} 
+		<small>${2:page_description}</small>
+	</h1>
+	
+	<ol class="breadcrumb">
+		<li><a href=""><i class="fa fa-dashboard"></i>Dashboard</a></li>
+		<li class="active">Laravel</li>
+	</ol>
+	@stop
+	
+	@section('content')
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box">
+				<div class="box-header with-border">
+					 <i class="fa fa-{!! $icon !!}"></i>
+					  <h3 class="box-title">${3:title}</h3>
+					&nbsp; | &nbsp;
+					<a href="{!! action('${4:create_controller}') !!}"><i class="fa fa-plus"></i> Create New </a>
+				</div><!-- /.box-header -->
+				<div class="box-body">
+				@include('${5:resource_directory}.partial._datatable')	
+				${0}
+
+				</div>
+			</div>
+		</div>
+	</div>
+	@stop
+	
+	@section('bottomScript')
+	@stop
+
+
+snippet new-page-create
+	@extends('layout.master')
+	
+	@section('css')
+	@stop	
+	
+	@section('topScript')
+	@stop	
+	
+	@section('content-header')
+	<!-- Content Header (Page header) -->
+	<h1>
+		<i class="fa fa-{!! $icon !!}"></i> ${1:page_name} 
+		<small>${2:page_description}</small>
+	</h1>
+	
+	<ol class="breadcrumb">
+		<li><a href=""><i class="fa fa-dashboard"></i>Dashboard</a></li>
+		<li class="active">Laravel</li>
+	</ol>
+	@stop
+	
+	@section('content')
+		@if( $errors->has() )
+		<div class="callout callout-danger">
+			<h4>Please fix the error and resubmit</h4>
+			<ul>
+				@foreach( $errors->all( '<li>:message</li>' ) as $error )
+					{!! $error !!}
+				@endforeach
+			</ul>
+		</div>
+		@endif
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box">
+				<div class="box-header with-border">
+					 <i class="fa fa-{!! $icon !!}"></i>
+					  <h3 class="box-title">${3:title}</h3>
+				</div><!-- /.box-header -->
+				<div class="box-body">
+			{!! Form::open( [ 'action' => '${5:process_controller_method}', 'method' => 'post', 'class' => 'form-horizontal', 'autocomplete' => 'off', 'files' => 'true' ] ) !!}
+				@include('${4:create_partial}')
+				${0}
+
+				<div class="form-group">
+					<label class="col-md-2 control-label"></label>
+					<div class="col-md-10">
+						<button type="submit" class="btn btn-success" value="Submit">Submit</button>
+					</div>
+				</div>
+		    		&nbsp; | &nbsp;
+		    		<a href="{!! action('${6:index_controller_method}') !!}"><i class="fa fa-level-up"></i> Back To ${7:list_name}</a>
+			{!! Form::close() !!}
+				</div>
+			</div>
+		</div>
+	</div>
+	@stop
+	
+	@section('bottomScript')
+	@if( $errors->has() )
+		<script>
+		var errors = 
+		<?php
+			$x = 1;
+			$count = count( $errors->all() );
+		?>
+
+		@foreach( $errors->all() as $error )
+			@if( $x != $count )
+				"{!! $error !!}\n" +
+			@else
+				"{!! $error !!}\n";
+			@endif
+			<?php
+			$x++;
+			?>
+		@endforeach
+		alert(errors);
+		</script>
+	@endif
+	@stop
+
+
+snippet new-page-edit
+	@extends('layout.master')
+	
+	@section('css')
+	@stop	
+	
+	@section('topScript')
+	@stop	
+	
+	@section('content-header')
+	<!-- Content Header (Page header) -->
+	<h1>
+		<i class="fa fa-{!! $icon !!}"></i> ${1:page_name} 
+		<small>${2:page_description}</small>
+	</h1>
+	
+	<ol class="breadcrumb">
+		<li><a href=""><i class="fa fa-dashboard"></i>Dashboard</a></li>
+		<li class="active">Laravel</li>
+	</ol>
+	@stop
+	
+	@section('content')
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box">
+				<div class="box-header with-border">
+					 <i class="fa fa-{!! $icon !!}"></i>
+					  <h3 class="box-title">${3:title}</h3>
+				</div><!-- /.box-header -->
+				<div class="box-body">
+			{!! Form::model( ${5:object}, [ 'action' => [ '${6:postMethod}', $5->id ], 'method' => 'post', 'class' => 'form-horizontal', 'autocomplete' => 'off', 'files' => 'true' ] ) !!}
+				@include('${4:edit_partial}')
+				${0}
+
+				<div class="form-group">
+					<label class="col-md-2 control-label"></label>
+					<div class="col-md-10">
+						<button type="submit" class="btn btn-success" value="Submit">Submit</button>
+					</div>
+				</div>
+		    		&nbsp; | &nbsp;
+		    		<a href="{!! action('${7:index_controller_method}') !!}"><i class="fa fa-level-up"></i> Back To ${8:list_name}</a>
+			{!! Form::close() !!}
+				</div>
+			</div>
+		</div>
+	</div>
+	@stop
+	
+	@section('bottomScript')
+	@if( $errors->has() )
+		<script>
+		var errors = 
+		<?php
+			$x = 1;
+			$count = count( $errors->all() );
+		?>
+
+		@foreach( $errors->all() as $error )
+			@if( $x != $count )
+				"{!! $error !!}\n" +
+			@else
+				"{!! $error !!}\n";
+			@endif
+			<?php
+			$x++;
+			?>
+		@endforeach
+		alert(errors);
+		</script>
+	@endif
+	@stop
+
 snippet row
 	<div class="row">
-
-		${0}	
+	${0}	
 
 	</div>
 
 snippet 12-col
 	<div class="col-md-12">
-
-		${0}
+	${0}
 
 	</div>
 
@@ -631,6 +879,22 @@ snippet 6-col
 
 	</div>
 
+snippet row-12-box
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box">
+				<div class="box-header with-border">
+					 <i class="fa fa-{!! $icon !!}"></i>
+					  <h3 class="box-title">Unit</h3>
+				</div><!-- /.box-header -->
+				<div class="box-body">
+
+					
+
+				</div>
+			</div>
+		</div>
+	</div>
 +---------------------------------- TABLE ------------------------------------------------+
 
 snippet datatable
@@ -697,8 +961,7 @@ snippet <td
 
 snippet db
 	\DB::transaction( function() use( $request ){
-
-		${0}
+		insert${0}
 
 
 	});
@@ -753,17 +1016,13 @@ snippet guarded
 snippet hasmany
 	public function ${1:function_name}()
 	{
-
-		return $this->hasMany( 'App\${2:model_name}', '${3:foreign_key}' )
-
+		return $this->hasMany( 'App\\${2:model_name}', '${3:foreign_key}' );
 	}
 
 snippet belongsto
 	public function ${1:function_name}()
 	{
-
-		return $this->belongsTo( 'App\${2:model_name}', '${3:foreign_key}' )
-
+		return $this->belongsTo( 'App\\${2:model_name}', '${3:foreign_key}' );
 	}
 
 +--------------------------- CONTROLLER -----------------------------------------+
@@ -830,11 +1089,246 @@ snippet insert-image
 
 	if( $request->hasFile('${1:image_fieldname}') )
 	{ 
-		$filename = ImageUploaderService::upload( $request->file( $1 ) );
+		$filename = ImageUploaderService::upload( $request->file( '$1' ) );
 		$i->$1 = $filename;
 	}
 
 	$i->save();
 
 
+<!------------------------------- MAWARITH SNIPPET ------------------------------->
+snippet mawarith-datatable
+	<table id="$1" class="table table-responsive table-bordered table-striped table-hover datatable">
+	<thead>
+		<tr>
+			<th>${2:header_1}</th>
+			<th>${3:header_2}</th>
+			<th>${4:header_3}</th>
+			<th>${5:header_4}</th>
+			<th>${6:header_5}</th>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach( ${7:rows} as ${8:row} )
+		<tr>
+			<td>{{ $8->${9:detail_1} }}</td>
+			<td>{{ $8->${10:detail_2} }}</td>
+			<td>{{ $8->${11:detail_3} }}</td>
+			<td>{{ $8->${12:detail_4} }}</td>
+			<td>{{ $8->${13:detail_5} }}</td>
+			<td><a href="{{ action('${14:action_link_to_delete}', $8->id) }}" class="btn btn-small btn-danger"><i class="fa fa-trash"></i></a></td>
+			<td><a href="{{ action('${15:action_link_to_edit}', $8->id) }}" class="btn btn-small btn-warning"><i class="fa fa-edit"></i></a></td>
+		</tr>
+		@endforeach
+	</tbody>
+	</table>
 
+snippet mawarith-new-page
+	@extends('layout.master')
+	
+	@section('content')
+	<div class="row">
+		<div class="col-md-12">
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">${1:title}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					@include('${2:partial}')
+				</div><!-- ./box-body -->
+				<div class="box-footer">
+				</div><!-- /.box-footer -->
+			</div><!-- /.box -->
+		</div><!-- /.col -->
+	</div>
+	@stop
+
+<!---------------------------------------- HELPERS --------------------------------->
+snippet src-i
+	assetImage( ${1:object_model}->${2:field_name} )
+snippet pic
+	<img src="{!! assetImage( ${1:object_model}->${2:field_name} ) !!}" width="auto" height="100px" />
+snippet jswitch
+	switch( ${1:variable} )
+	{
+		case ${2:value_2}:
+			${0}	
+			break;
+	}
+snippet jcase
+	case ${1:next_value_case}:
+		${0}	
+		break;
+
+snippet divider
+	/*----------------------------------- ${1:divider name} ---------------------------------------*/
+snippet jcascade-delete
+	/*------------------- Cascade Delete -------------------------*/
+	public static function boot()
+	{
+	    parent::boot();
+
+	    //cause a delete of a product to cascade to children so they also deleted
+	    //only cascade one with reference to ${1:model}_id
+	    static::deleted( function( $$1 )
+	    {
+		    $$1->${2:relationship}()->delete();
+	    });
+	}
+
+<!------------------------------------- AMA SNIPPETS ------------------------------->
+snippet ama-report-ss
+	    //${1:State} service_state_id = ${2:service_state_id},
+	    	//CallTypeId = 1 - accident
+	    	if($row->service_state_id == $2 && $row->call_type_id == 1){ $${3:state}AccidentCount = $row->total; }	
+		//callTypeId = 2 - breakdown
+	    	if($row->service_state_id == $2 && $row->call_type_id == 2){ $$3BreakDownCount = $row->total; }	
+		//callTypeId = 3 - general enquiry
+	    	if($row->service_state_id == $2 && $row->call_type_id == 3){ $$3GeneralEnquiryCount = $row->total; }	
+		//callTypeId = 4 - complaint
+	    	if($row->service_state_id == $2 && $row->call_type_id == 4){ $$3ComplaintCount = $row->total; }	
+		//callTypeId = 5 - technical_advice
+	    	if($row->service_state_id == $2 && $row->call_type_id == 5){ $$3TechnicalAdviceCount = $row->total; }	
+snippet ama-report-data
+	['${1:State}', {!! $${2:state}AccidentCount !!}, {!! $$2BreakDownCount !!}, {!! $$2GeneralEnquiryCount !!}, {!! $$2ComplaintCount !!}, {!! $$2TechnicalAdviceCount !!}],
+snippet amac
+	'${1:state}AccidentCount', '$1BreakDownCount', '$1GeneralEnquiryCount', '$1ComplaintCount', '$1TechnicalAdviceCount',
+snippet count
+	$${1:state}AccidentCount = 0; $$1BreakDownCount = 0; $$1GeneralEnquiryCount = 0; $$1ComplaintCount = 0; $$1TechnicalAdviceCount = 0;
+
+<!---------------------------------- LARAVEL MIGRATION AND SEEDING HELPERS --------------->
+snippet sd
+	$table->softDeletes();
+snippet seed
+	    $items = [
+		    [
+		    	'${2:field_name}' => '${3:value}',
+			${4:sf}${0}
+		    ]
+	    ];
+	    \DB::table('${1:table_name}')->insert($items);
+snippet sf
+	'${1:field_name}' => '${2:value}',
+	${3:sf}${0}
+snippet nsf
+	[
+		'${1:field_name}' => '${2:value}',
+		${3:sf}${0}
+	]
+
+snippet controller-crud-test
+	<?php
+
+	namespace App\Http\Controllers;
+
+	use Illuminate\Http\Request;
+	use App\Http\Requests;
+	use App\\${1:model_name};
+
+	class $1Controller extends Controller
+	{
+
+snippet controller-crud
+	<?php
+
+	namespace App\Http\Controllers;
+
+	use Illuminate\Http\Request;
+	use App\Http\Requests;
+	use App\\${1:model_name};
+
+	class $1Controller extends Controller
+	{
+		public function __construct()
+		{
+			view()->share('icon', '${2:icon_class_name}');
+		}
+
+		/*--------------------------------------------------------------------------------------------------------------------/	
+		 *
+		 *	@description	This will show all the $1s available
+		 *	@author		Idham Hafidz JOMos	idham@jomos.com.my
+		 */
+		public function getIndex(   )
+		{
+			\$${3:small_case_model_name}s = $1::all();
+			return view('$3.index', compact( '$3s') );
+		}
+
+		/*--------------------------------------------------------------------------------------------------------------------/	
+		 *
+		 *	@description	This will create a new $1
+		 *	@author		Idham Hafidz JOMos	idham@jomos.com.my
+		 */
+		public function getCreate(   )
+		{
+			return view('$3.create');
+		}
+
+		/*--------------------------------------------------------------------------------------------------------------------/	
+		 *
+		 *	@description	This will process creation of $1
+		 *	@author		Idham Hafidz JOMos	idham@jomos.com.my
+		 */
+		public function postCreate( Request $request )
+		{
+			//validate	
+			//db	
+
+			\Toastr::success('Create $1 is successful');
+			return redirect()->action('$1Controller@getIndex');
+		}
+
+		/*--------------------------------------------------------------------------------------------------------------------/	
+		 *
+		 *	@description	This will show the edit form
+		 *	@author		Idham Hafidz JOMos	idham@jomos.com.my
+		 */
+		public function getEdit(  \$$3Id )
+		{
+			\$$3 = $1::find( \$$3Id );
+			return view('$3.edit', compact( '$3' ) );
+		}
+
+		/*--------------------------------------------------------------------------------------------------------------------/	
+		 *
+		 *	@description	This will process updating of $1
+		 *	@author		Idham Hafidz JOMos	idham@jomos.com.my
+		 */
+		public function postUpdate( Request $request, \$$3Id )
+		{
+			//validate	
+			//db	
+
+			\Toastr::success('Update $1 is successful');
+			return redirect()->action('$1Controller@getIndex');
+		}
+
+		/*--------------------------------------------------------------------------------------------------------------------/	
+		 *
+		 *	@description	This will delete the $1
+		 *	@author		Idham Hafidz JOMos	idham@jomos.com.my
+		 */
+		public function getDestroy(  $$3Id )
+		{
+			$$3 = $1::find( \$$3Id );
+			\$$3->delete();
+
+			\Toastr::success('$1 is deleted');
+			return redirect()->back();
+		}
+	}
+
+snippet getActiveStatus
+	public function getActiveStatus()
+	{
+		if($this->${1:active_column_name} == 1)
+		{
+			return 'Active';
+		} else {
+			return 'Non Active';
+		}
+	}
